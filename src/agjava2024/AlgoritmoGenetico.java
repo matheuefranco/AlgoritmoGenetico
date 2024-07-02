@@ -7,13 +7,18 @@ public class AlgoritmoGenetico {
     private int tamPopulacao;
     private int tamCromossomo=0;
     private double capacidade;
+    private int probMutacao;
+    private int qtdeCruzamentos;
     private ArrayList<Produto> produtos = new ArrayList<>();
     private ArrayList<ArrayList> populacao = new ArrayList<>();
     private ArrayList<Integer> roletaVirtual = new ArrayList<>();
 
-    public AlgoritmoGenetico(int tamanhoPopulacao, double capacidadeMochila){
+    public AlgoritmoGenetico(int tamanhoPopulacao, double capacidadeMochila,
+                                int probabilidadeMutacao, int qtdeCruzamentos){
         this.tamPopulacao = tamanhoPopulacao;
         this.capacidade = capacidadeMochila;
+        this.probMutacao = probabilidadeMutacao;
+        this.qtdeCruzamentos = qtdeCruzamentos;
     }
     
     public void executar(){
@@ -102,5 +107,55 @@ public class AlgoritmoGenetico {
        int selecionado = r.nextInt(roletaVirtual.size());
        return roletaVirtual.get(selecionado);
    }// fim roleta
+   
+   private ArrayList cruzamento(){
+        ArrayList<Integer> filho1 = new ArrayList(); 
+        ArrayList<Integer> filho2 = new ArrayList();
+        ArrayList<ArrayList>filhos = new ArrayList();
+        ArrayList<Integer> pai1,pai2;
+        int indice_pai1, indice_pai2;
+        indice_pai1 = roleta(); // selecionados
+        indice_pai2 = roleta();
+        pai1 = populacao.get(indice_pai1);
+        pai2 = populacao.get(indice_pai2);
+        Random r = new Random();
+        int pos = r.nextInt(this.tamCromossomo); // ponto de corte
+        for(int i=0;i<=pos;i++){
+            filho1.add(pai1.get(i));
+            filho2.add(pai2.get(i));
+        }
+        for(int i=pos+1;i<this.tamCromossomo;i++){
+           filho1.add(pai2.get(i));
+           filho2.add(pai1.get(i));
+        }
+        filhos.add(filho1);
+        filhos.add(filho2);
+        return filhos;
+   }
+   
+    private void mutacao(ArrayList<Integer> filho){
+       Random r = new Random();
+       int v = r.nextInt(100);
+       if(v<this.probMutacao){
+           int ponto = r.nextInt(this.tamCromossomo);
+           if(filho.get(ponto)==1)
+               filho.set(ponto,0);
+           else
+               filho.set(ponto,1);
+           
+           int ponto2 = r.nextInt(this.tamCromossomo);
+           if(filho.get(ponto2)==1)
+               filho.set(ponto2,0);
+           else
+               filho.set(ponto2,1);
+           
+         System.out.println("Ocorreu mutação!");
+       }// fim if mutacao     
+    }
+    private void operadoresGeneticos(){
+        
+    }
+    
+
     
 }

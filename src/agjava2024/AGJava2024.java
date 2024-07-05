@@ -8,8 +8,9 @@ public class AGJava2024 {
         double limitePeso = 8;
         int probabilidadeMutacao = 5; // 5%
         int qtdeCruzamentos = 5;
+        int numeroGeracoes = 10;
        AlgoritmoGenetico meuAg = 
-               new AlgoritmoGenetico(populacao,limitePeso,probabilidadeMutacao,qtdeCruzamentos);
+               new AlgoritmoGenetico(populacao,limitePeso,probabilidadeMutacao,qtdeCruzamentos, numeroGeracoes);
        meuAg.carregaArquivo("dados.csv");
        meuAg.executar();
     }
